@@ -1,0 +1,89 @@
+.content-wrap{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.icon-room{
+    color: #030303;
+    fill: #030303;
+    width: 26px;
+    height: 26px;
+    align-self: center;
+}
+.content-wrap .content{
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    position: relative;
+}
+.content-wrap .content .title{
+    font-size: 14px;
+    font-weight: 600;
+    align-self: center;
+}
+.content-wrap .input-content{
+    width: 100%;
+    height: 48px;
+    box-sizing: border-box;
+    background-color: rgba(227,224,215,0);
+    border: 1px solid #f0f0f0;
+    box-sizing: border-box;
+}
+.content-wrap .input-content input{
+    position: absolute;
+    width: calc(100% - 48px);
+    top:50%;
+    left: 48px;
+    transform: translatey(-50%);
+    background-color: transparent;
+    border: none;
+}
+.content-wrap .input-content .icon-room{
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+}
+.content-wrap .input-content .btn-search{
+    background-color: #1b1811;
+    color: #d5dfca;
+    font-size: 12px;
+    font-weight: 600;
+    align-self: center;
+    padding: 4px;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    border: none;
+}
+.shopping-list-wrap{
+    margin-top: 26px;
+}
+.anchor-make-room{
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    text-decoration: none;
+    height: 48px;
+    background-color: rgba(227,224,215,0);
+    border: 1px solid #f0f0f0;
+    box-sizing: border-box;
+    padding: 12px 16px;
+}
+.anchor-make-room span{
+    color: #030303;
+    font-size: 16px;
+    align-self: center;
+}
+.icon-plus{
+    color: #030303;
+    fill: #030303;
+    width: 16px;
+    height: 16px;
+    align-self: center;
+}

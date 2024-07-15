@@ -1,0 +1,58 @@
+.textarea-short{
+    height: 54px;
+}
+.textarea-long{
+    height: 72px;
+}
+.content-container{
+    margin-top: 16px;
+}
+.form-make-room{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.form-make-room p{
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.textarea-container{
+    position: relative;
+    width: 100%;
+    background-color: rgba(227,224,215,0);
+    border: 1px solid #f0f0f0;
+}
+.textarea-container.active{
+    border: 1px solid #524f48;
+    box-sizing: border-box;
+    background-color: #d5dfca;
+    color: #65625b;
+}
+textarea{
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 16px;
+    background-color: transparent;
+    border: none;
+    font-family: "Gothic A1";
+    color: #65625b;
+    font-size: 16px;
+}
+.textarea-container .limited-length{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: #62625b;
+    font-size: 14px;
+}
+.textarea-container.short{
+    height: 80px;
+}
+.textarea-container.long{
+    height: 104px;
+}
+

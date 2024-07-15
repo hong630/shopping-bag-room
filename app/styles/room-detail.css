@@ -1,0 +1,190 @@
+.header.room{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.icon-setting,
+.icon-out-room,
+.icon-invitation,
+.icon-members{
+    color: #030303;
+    fill: #030303;
+    width: 30px;
+    height: 30px;
+    align-self: center;
+}
+.anchor-edit,
+.anchor-out-room,
+.btn-invite,
+.anchor-members{
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    background-color: transparent;
+    outline: none;
+    text-align: center;
+    align-self: center;
+    border: none;
+    height: 48px;
+    justify-content: space-between;
+    text-decoration: none;
+}
+.anchor-edit,
+.anchor-members{
+    text-decoration: none;
+}
+.anchor-out-room,
+.btn-invite{
+    padding: 0;
+}
+.btn-invite{
+    flex-wrap: wrap;
+}
+.anchor-edit span,
+.anchor-out-room span,
+.btn-invite span,
+.anchor-members span{
+    color: #000;
+    font-size: 10px;
+    font-family: "Gothic A1", sans-serif;
+    line-height: 8px;
+    white-space: nowrap;
+}
+.header-function-container,
+.room-function-container{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-self: center;
+}
+.room-function-container{
+    gap: 16px;
+}
+.room-title{
+    font-size: 16px;
+    font-family: "Gothic A1";
+    font-weight: 500;
+}
+.wrap.room-detail{
+    margin-top: 14px;
+}
+.room-info-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.room-text-info-container{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-self: end;
+}
+.room-text-info{
+    display: flex;
+    flex-direction: row;
+}
+.room-text-info .icon-bag,
+.room-text-info .icon-person{
+    color: #030303;
+    fill: #030303;
+    width: 14px;
+    height: 14px;
+    align-self: center;
+}
+.room-text-info span{
+    color: #62625b;
+    font-size: 14px;
+    align-self: center;
+}
+.room-info-detail{
+    margin-top: 8px;
+    color: #000000;
+    font-size: 12px;
+}
+.shopping-list-title{
+    color: #030303;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 20px 0 16px 0;
+}
+.icon-shopped{
+    width: 16px;
+    height: 16px;
+    align-self: center;
+    flex-shrink: 0;
+}
+
+.room-item .btn-complete{
+    all: unset;
+    cursor: pointer;
+    width: 44px;
+    height: 25px;
+    padding: 0px 8px;
+    border: 0;
+    box-sizing: border-box;
+    background-color: #1b1811;
+    color: #d5dfca;
+    font-size: 12px;
+    font-weight: 600;
+    outline: none;
+    align-self: center;
+    text-align: center;
+    margin-right: 12px;
+}
+.input-container{
+    display: flex;
+    flex-direction: row;
+    margin-left: 12px;
+}
+.room-item.add-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.room-item .btn-list-function{
+    width: 16px;
+    height: 16px;
+    align-self: center;
+    margin-left: 12px;
+    padding-left: 0;
+}
+.shopping-list-container{
+    display: flex;
+    flex-direction: row;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    gap: 10px;
+}
+/*참여자, 장바구니 관리*/
+.member-list-wrap,
+.setting-wrap{
+    margin-top: 38px;
+}
+.member-list-wrap .icon-room-list{
+    margin: 12px 0 8px 0;
+}
+.room-list.authority-user-list .box{
+    position: relative;
+}
+.room-list.authority-user-list input{
+    position: absolute;
+    top: 0;
+    padding: 0;
+    left: 50%;
+    transform: translatex(-50%);
+    width: 100%;
+    margin: 0;
+    opacity: 0;
+}
+.authority-changing-guide{
+    margin-bottom: 16px;
+    color: #030303;
+    font-size: 14px;
+    font-weight: 600;
+}
+.member-list-wrap .buttons-wrap{
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+}

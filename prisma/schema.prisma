@@ -1,0 +1,45 @@
+//npx prisma migrate dev --name <migration name>
+//npx prisma migrate dev --name init
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  nickname String  @default("귀여운 햄스터")
+  password String
+  members MemberRoom[]
+}
+
+model Room {
+  roomId Int @id @default(autoincrement())
+  title String @default("장바구니")
+  description String @default("")
+  code String
+  members MemberRoom[]
+  shoppingItems ShoppingItem[]
+}
+
+model MemberRoom {
+  email String
+  roomId Int
+  authority String
+  room      Room     @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
+  user      User     @relation(fields: [email], references: [email], onDelete: Cascade)
+  @@id([email, roomId])
+}
+
+model ShoppingItem {
+  id Int @id @default(autoincrement())
+  name String
+  shopped Boolean @default(false)
+  room      Room   @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
+  roomId Int
+}
