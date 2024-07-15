@@ -8,6 +8,13 @@ framework = "vite"
 
 # Set immutable caching for static files, because they have fingerprinted filenames
 
+[[plugins]]
+package = "@netlify/plugin-functions-core"
+
+[build.lifecycle]
+onPreBuild = "netlify functions:invoke get-db"
+onPostBuild = "netlify functions:invoke upload-db"
+
 [[headers]]
 for = "/build/*"
 
