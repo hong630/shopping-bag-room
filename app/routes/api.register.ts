@@ -50,30 +50,36 @@ async function signUp(body:UserDao){
 // 로그인
 export async function login(body: UserDao, cookie:string|null){
         const loginEmail = body.email as string
-        // const loginPassword = body.password as string
-        console.log(body,cookie);
-        const userData = await prisma.user.findUnique({where:{email:loginEmail}}) || "err"
-        return {state: userData.toString()}
+        const loginPassword = body.password as string
 
-        // if (userData !== null){
-        //         const compareBool =  await bcrypt.compare(loginPassword, userData.password)
-        //         if(compareBool){
-        //                 // 세션에 user 전달
-        //                 const session = await getSession(cookie);
-        //                 session.set("user", { id: userData.id, email: userData.email, nickname: userData.nickname });
-        //                 return json(
-        //                     { state: 'Success' },
-        //                     {
-        //                             headers: {
-        //                                 "Set-Cookie": await commitSession(session),
-        //                         },
-        //                 });
-        //         } else {
-        //                 return {state:'Invalid Password'}
-        //         }
-        // } else {
-        //         return {state:'Invalid Email'}
-        // }
+        let userData = null
+
+        try {
+                userData = await prisma.user.findUnique({where:{email:loginEmail}})
+        } catch (err) {
+                return {state:err}
+        }
+
+
+        if (userData !== null){
+                const compareBool =  await bcrypt.compare(loginPassword, userData.password)
+                if(compareBool){
+                        // 세션에 user 전달
+                        const session = await getSession(cookie);
+                        session.set("user", { id: userData.id, email: userData.email, nickname: userData.nickname });
+                        return json(
+                          { state: 'Success' },
+                          {
+                                  headers: {
+                                          "Set-Cookie": await commitSession(session),
+                                  },
+                          });
+                } else {
+                        return {state:'Invalid Password'}
+                }
+        } else {
+                return {state:'Invalid Email'}
+        }
 
 }
 
@@ -92,12 +98,12 @@ export async function withdraw(body: UserDao, cookie:string|null){
                 //세션 파기
                 const session = await getSession(cookie);
                 return json(
-                    { state: 'Success' },
-                    {
-                            headers: {
-                                    "Set-Cookie": await destroySession(session),
-                            },
-                    });
+                  { state: 'Success' },
+                  {
+                          headers: {
+                                  "Set-Cookie": await destroySession(session),
+                          },
+                  });
         } catch (err){
                 return  {state:err}
         }
