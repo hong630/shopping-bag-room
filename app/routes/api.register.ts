@@ -51,11 +51,11 @@ async function signUp(body:UserDao){
 export async function login(body: UserDao, cookie:string|null){
         const loginEmail = body.email as string
         const loginPassword = body.password as string
-
+        const userData = await prisma.user.findUnique({where:{email:loginEmail}})
         // 확인해야함
-        return {state: loginEmail + "/" + loginPassword + "/" + cookie  + "/" + "api check"}
+        return {state: loginEmail + "/" + loginPassword + "/" + cookie  + "/" + "api check" + "/" + userData}
         //
-        // const userData = await prisma.user.findUnique({where:{email:loginEmail}})
+
         //
         // if (userData !== null){
         //         const compareBool =  await bcrypt.compare(loginPassword, userData.password)
