@@ -51,27 +51,31 @@ async function signUp(body:UserDao){
 export async function login(body: UserDao, cookie:string|null){
         const loginEmail = body.email as string
         const loginPassword = body.password as string
-        const userData = await prisma.user.findUnique({where:{email:loginEmail}})
 
-        if (userData !== null){
-                const compareBool =  await bcrypt.compare(loginPassword, userData.password)
-                if(compareBool){
-                        // 세션에 user 전달
-                        const session = await getSession(cookie);
-                        session.set("user", { id: userData.id, email: userData.email, nickname: userData.nickname });
-                        return json(
-                            { state: 'Success' },
-                            {
-                                    headers: {
-                                        "Set-Cookie": await commitSession(session),
-                                },
-                        });
-                } else {
-                        return {state:'Invalid Password'}
-                }
-        } else {
-                return {state:'Invalid Email'}
-        }
+        // 확인해야함
+        return {state: loginEmail + "/" + loginPassword + "/" + cookie  + "/" + "api check"}
+        //
+        // const userData = await prisma.user.findUnique({where:{email:loginEmail}})
+        //
+        // if (userData !== null){
+        //         const compareBool =  await bcrypt.compare(loginPassword, userData.password)
+        //         if(compareBool){
+        //                 // 세션에 user 전달
+        //                 const session = await getSession(cookie);
+        //                 session.set("user", { id: userData.id, email: userData.email, nickname: userData.nickname });
+        //                 return json(
+        //                     { state: 'Success' },
+        //                     {
+        //                             headers: {
+        //                                 "Set-Cookie": await commitSession(session),
+        //                         },
+        //                 });
+        //         } else {
+        //                 return {state:'Invalid Password'}
+        //         }
+        // } else {
+        //         return {state:'Invalid Email'}
+        // }
 
 }
 
