@@ -1,9 +1,9 @@
-//npx prisma migrate dev --name <migration name>
-//npx prisma migrate dev --name init
+// npx prisma migrate dev --name <migration name>
+// npx prisma migrate dev --name init
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = "file:./prisma/dev.db"
 }
 
 generator client {
@@ -11,35 +11,36 @@ generator client {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  nickname String  @default("귀여운 햄스터")
+  id       Int          @id @default(autoincrement())
+  email    String       @unique
+  nickname String       @default("귀여운 햄스터")
   password String
-  members MemberRoom[]
+  members  MemberRoom[]
 }
 
 model Room {
-  roomId Int @id @default(autoincrement())
-  title String @default("장바구니")
-  description String @default("")
-  code String
-  members MemberRoom[]
+  roomId        Int            @id @default(autoincrement())
+  title         String         @default("장바구니")
+  description   String         @default("")
+  code          String
+  members       MemberRoom[]
   shoppingItems ShoppingItem[]
 }
 
 model MemberRoom {
-  email String
-  roomId Int
+  email     String
+  roomId    Int
   authority String
-  room      Room     @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
-  user      User     @relation(fields: [email], references: [email], onDelete: Cascade)
+  room      Room   @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
+  user      User   @relation(fields: [email], references: [email], onDelete: Cascade)
+
   @@id([email, roomId])
 }
 
 model ShoppingItem {
-  id Int @id @default(autoincrement())
-  name String
+  id      Int     @id @default(autoincrement())
+  name    String
   shopped Boolean @default(false)
-  room      Room   @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
-  roomId Int
+  room    Room    @relation(fields: [roomId], references: [roomId], onDelete: Cascade)
+  roomId  Int
 }
