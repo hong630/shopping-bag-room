@@ -1,10 +1,11 @@
-import {ActionFunction, json} from "@remix-run/node";
-import {ErrorResponse, UserDao} from "~/data/dao";
-import {Prisma, PrismaClient} from "@prisma/client";
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
+import { ErrorResponse, UserDao } from "~/data/dao";
+import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
-import {commitSession, getSession} from "~/routes/session";
-import {catchErrCode} from "~/utils/prismaErr";
-import {hashPassword} from "~/routes/api.register";
+import { commitSession, getSession } from "~/routes/session";
+import { catchErrCode } from "~/utils/prismaErr";
+import { hashPassword } from "~/routes/api.register";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const prisma = new PrismaClient();
 async function updatePassword(email:string, newPassword:string): Promise<UserDao | ErrorResponse> {
     const hashedNewPassword = await hashPassword(newPassword);
     try {
-        const updatedUser = await prisma.user.update({
+        return await prisma.user.update({
             where: {
                 email: email,
             },
@@ -22,10 +23,9 @@ async function updatePassword(email:string, newPassword:string): Promise<UserDao
                 password: hashedNewPassword,
             },
         });
-        return updatedUser;
     } catch (err) {
         console.error('Error updating password:', err);
-        if(err instanceof Prisma.PrismaClientKnownRequestError){
+        if(err instanceof PrismaClientKnownRequestError){
             return catchErrCode(err.code)
         }
         return  {state:'An error occurred while resetting password.'}
@@ -48,7 +48,7 @@ async function changePassword(body:UserDao){
 //닉네임 변경 (prisma)
 async function updateNickname(email:string, nickname:string) {
     try {
-        const updatedUser = await prisma.user.update({
+        return await prisma.user.update({
             where: {
                 email: email,
             },
@@ -98,45 +98,51 @@ function generateRandomPassword() {
     return password;
 }
 
-// TODO 이메일 전송 설정
-// const transporter = nodemailer.createTransport({
-//     service: 'Gmail', // 원하는 이메일 서비스 사용
-//     auth: {
-//         user: 'hongihongi60@gmail.com',
-//         pass: process.env.EMAIL_PASSWORD,
-//     },
-// });
+async function getPasswordQuestion(email:string){
+    const targetEmail = email as string
 
-async function resetPassword(body:UserDao){
-    try{
-    // 무작위 비밀번호 생성
-    const newPassword = generateRandomPassword();
+    let userData = null
 
-    //데이터베이스 비밀번호 업데이트
-    const updatedPassword = await updatePassword(body.email, newPassword);
-    //없는 이메일인 경우
-    if ('state' in updatedPassword) {
-        return  {state: 'invalid email'}
-    }
-
-    // TODO 이메일 전송
-    // const mailOptions = {
-    //     from: 'hongihongi60@gmail.com',
-    //     to: body.email,
-    //     subject: '비밀번호를 변경하였습니다.',
-    //     text: `새로운 비밀번호는 ${newPassword} 입니다. 로그인 후 비밀번호를 변경해주세요.`,
-    // };
-    //
-    // await transporter.sendMail(mailOptions);
-
-    return { state : 'Success' };
+    try {
+        userData = await prisma.user.findUnique({where:{email:targetEmail}})
+        return {state : userData.question}
     } catch (err) {
-        if(err instanceof Prisma.PrismaClientKnownRequestError){
-            return catchErrCode(err.code)
-        }
-        return  {state:'An error occurred while resetting password.'}
+        return {state:err}
     }
+}
+async function resetPassword(body:UserDao){
+    const targetEmail = body.email;
+    const targetAnswer = body.answer;
 
+    let userData = null
+
+    try {
+        userData = await prisma.user.findUnique({where:{email:targetEmail}})
+        if(userData.answer === targetAnswer){
+            try{
+                // 무작위 비밀번호 생성
+                const newPassword = generateRandomPassword();
+
+                //데이터베이스 비밀번호 업데이트
+                const updatedPassword = await updatePassword(body.email, newPassword);
+                //없는 이메일인 경우
+                if ('state' in updatedPassword) {
+                    return  {state: 'invalid email'}
+                }
+
+                return { state : 'Success', password: newPassword};
+            } catch (err) {
+                if(err instanceof PrismaClientKnownRequestError){
+                    return catchErrCode(err.code)
+                }
+                return  {state:'An error occurred while resetting password.'}
+            }
+        }else{
+            return {state : "wrong answer"}
+        }
+    }catch (err) {
+        return {state:err}
+    }
 }
 
 
@@ -153,5 +159,17 @@ export const action:ActionFunction = async ({ request }) => {
             return await resetPassword(body);
         default :
             return {state: "Err"}
+    }
+}
+
+export const loader:LoaderFunction = async ({request}) => {
+    const loaderUrl = new URL(request.url);
+    const email = loaderUrl.searchParams.get('email') || '';
+    const type = loaderUrl.searchParams.get('type') || '';
+    switch(type){
+        case "getQuestion":
+            return await getPasswordQuestion(email);
+        default:
+            return {state : 'Invalid Type'}
     }
 }

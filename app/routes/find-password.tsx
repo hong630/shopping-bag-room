@@ -14,30 +14,73 @@ const FindPassword = () => {
     //비밀번호 찾기 모달 토글
     const [findingPasswordPage, setFindingPasswordPage] = useState<boolean>(true);
 
+    //비밀번호 찾기 질문 표
+    const [passwordQuestion, setPasswordQuestion] = useState(null);
+
     //비밀번호 찾기 결과 메시지
     const [findingPasswordResult, setFindingPasswordResult] = useState<string>('');
+
+    //비밀번호 찾기 완료
+    const [resetSuccess, setResetSuccess] = useState(null);
+
+    //사용자 이메일
+    const [userEmail, setUserEmail] = useState('');
+
 
     //없는 이메일일 때 다시 입력해달라는 메시지 열기
     const openModalAskingRetry = () => {
         setFindingPasswordResult('none');
     }
 
-    //있는 이메일일 때 리셋 이메일 보냈다는 안내 메시지 열기
-    const openModalResetCompleted = () => {
-        setFindingPasswordResult('email');
-    }
+    //있는 이메일일 때
+    //TODO 이메일과 대답 맞는 지 확인하기
+    //TODO 맞는 경우 랜덤 비밀번호로 바꾸고 보여주기
+
+
     const apiUrl = getBaseUrl();
+
+    //TODO 이메일가지고 질문 가져오기
+    const getUserPasswordQuestion = async (event:React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        //비밀번호 찾기 모달 닫기
+        const formData = new FormData(event.currentTarget);
+        const email = formData.get("email");
+        const url = new URL(`${apiUrl}/api/changeUser`);
+        if(email !== null){
+            //스크립트 태그, HTML 태그 제거
+            const sanitizedEmail = await sanitizeValue(email.toString());
+            url.searchParams.append('email', sanitizedEmail);
+            url.searchParams.append('type', 'getQuestion');
+            fetch(url,
+              {
+                  method: "GET",
+              })
+              .then(async (res)=>{
+                  const data = await res.json()
+                  const response = data.state;
+                  //이메일 저장
+                  setUserEmail(sanitizedEmail);
+                  //질문 UI 보여주기
+                  setFindingPasswordPage(false);
+                  setPasswordQuestion(response);
+              })
+              .catch(()=>{
+                  //없는 이메일일 때 다시 입력해달라는 메시지 열기
+                  openModalAskingRetry();
+              })
+        }
+    }
+
     //비밀번호 찾기 결과 보여주기
     const showFindingPasswordResult = async (event:React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         //비밀번호 찾기 모달 닫기
         const formData = new FormData(event.currentTarget);
-        const email = formData.get("email");
-        console.log(email)
-        if(email !== null){
+        const answer = formData.get("passwordAnswer");
+        if(answer!==null){
+            console.log('됨? 1')
             //스크립트 태그, HTML 태그 제거
-            const sanitizedEmail = await sanitizeValue(email.toString());
-            console.log(sanitizedEmail)
+            const sanitizedAnswer = await sanitizeValue(answer.toString());
             fetch(`${apiUrl}/api/changeUser`,
                 {
                     method: "PUT",
@@ -46,22 +89,26 @@ const FindPassword = () => {
                     },
                     body: JSON.stringify({
                         type : 'resetPassword',
-                        email: sanitizedEmail
+                        email: userEmail,
+                        answer: sanitizedAnswer
                     }),
                 })
                 .then(async (res)=>{
+                    console.log('됨? 2')
                     const data = await res.json()
                     const response = data.state;
                     if (response === 'Success'){
                         //있는 이메일일 때 리셋 이메일 보냈다는 안내 메시지 열기
+                        //TODO 작업 중
                         setFindingPasswordPage(false);
-                        openModalResetCompleted();
+                        setPasswordQuestion(null);
+                        setResetSuccess(data.password);
                     }else{
-                        //없는 이메일일 때 다시 입력해달라는 메시지 열기
-                        openModalAskingRetry();
+                        //틀린 답이라는 메시지
+                        setFindingPasswordResult("wrongAnswer");
                     }
                 })
-                .catch((err)=>{
+                .catch(()=>{
                     //없는 이메일일 때 다시 입력해달라는 메시지 열기
                     openModalAskingRetry();
                 })
@@ -81,13 +128,13 @@ const FindPassword = () => {
             <AuthHeader/>
             <div className="wrap">
                 <div className="img-container img-shopping">
-                    <img src="/shopping.png" alt="shopping image"/>
+                    <img src="/shopping.png" alt="shopping"/>
                 </div>
                 <h1>비밀번호 찾기</h1>
                 {
                     findingPasswordPage ?
                         <div>
-                            <Form onSubmit={showFindingPasswordResult}>
+                            <Form onSubmit={getUserPasswordQuestion}>
                                 <label htmlFor="email" className="visually-hidden">아이디</label>
                                 <input type="text" name="email" placeholder="아이디를 입력해주세요."
                                         style={emailInputStyle} onFocus={errorHandleFocus}/>
@@ -105,9 +152,31 @@ const FindPassword = () => {
                         <div></div>
                 }
                 {
-                    findingPasswordResult === 'email' ? (
+                    passwordQuestion ? (
+                      <div>
+                          <p className="subtitle">다음의 질문에 대답해주세요.</p>
+                          <Form onSubmit={showFindingPasswordResult}>
+                              <label htmlFor="passwordAnswer" className="title">{passwordQuestion}</label>
+                              <input type="text" name="passwordAnswer" placeholder="10자 이내로 입력해주세요."/>
+                              {findingPasswordResult === 'wrongAnswer' ?
+                                <p className="warning-message">틀린 답변입니다. 다시 입력해주세요.</p>
+                                :
+                                <div></div>
+                              }
+                              <div className="buttons-wrap">
+                                  <button type="submit">확인</button>
+                              </div>
+                          </Form>
+                      </div>
+                    ):(
+                      <div></div>
+                    )
+                }
+                {
+                    resetSuccess ? (
                         <div>
-                            <p>임시 비밀번호를 이메일로 전송했습니다. 이메일을 확인해주세요.</p>
+                            <p>임시 비밀번호는 <span>{resetSuccess}</span> 입니다.
+                            임시 비밀번호로 로그인하신 후엔 비밀번호를 변경해주세요.</p>
                             <div className="buttons-wrap">
                                 <Link to="/login">확인</Link>
                             </div>
