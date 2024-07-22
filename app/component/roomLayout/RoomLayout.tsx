@@ -1,14 +1,9 @@
-import React, {useEffect, useRef, useState} from "react";
+import {useRef} from "react";
 import ShoppingRoomListComponent from "~/component/shoppingRoom/shoppingRoomList";
-import MakeRoomModal from "~/component/shoppingRoom/makeRoomModal";
-import LoginComponent from "~/component/auth/login";
 import HeaderLayout from "~/component/common/header";
 import {Link} from "@remix-run/react";
 
 const RoomLayout = (props:{email:string, userName:string}) => {
-
-    //장바구니 방 만들기
-    const [shareRoomToggle, setShareRoomToggle] = useState(false);
 
     //방으로 가기
     const searchInput = useRef<HTMLInputElement>(null);
@@ -54,7 +49,6 @@ const RoomLayout = (props:{email:string, userName:string}) => {
                     <span>새로운 장바구니 만들기</span>
                 </Link>
             </div>
-            {shareRoomToggle ? <MakeRoomModal email={props.email} />:<div></div>}
         </div>
     )
 }

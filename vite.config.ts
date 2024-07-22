@@ -4,5 +4,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { netlifyPlugin } from "@netlify/remix-adapter/plugin";
 
 export default defineConfig({
+  server: {
+    port:3000
+  },
   plugins: [remix(), netlifyPlugin(), tsconfigPaths()],
 });

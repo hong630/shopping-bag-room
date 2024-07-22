@@ -113,7 +113,7 @@ label{
     font-size: 14px;
     font-weight: 600;
 }
-input, textarea{
+input, textarea, select{
     width: 100%;
     height: 48px;
     border: 1px solid #524f48;

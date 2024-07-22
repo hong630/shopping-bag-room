@@ -22,7 +22,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 const RoomIndex = () => {
     const data = useLoaderData() as LoggedInUserData;
-    const { user, isLoggedIn } = data;
+    const { user } = data;
     const email = user?.email || "";
     const userNickname = user?.nickname || "";
     return (

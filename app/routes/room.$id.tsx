@@ -2,13 +2,9 @@ import {LoggedInUserData, RoomDetailDto} from "~/data/dto";
 import React, {useEffect, useState} from 'react';
 import ShoppingList from "~/component/shoppingRoom/ShoppingList";
 import {useLoaderData, useParams} from "react-router";
-import HeaderLayout from "~/component/common/header";
 import {Form, Link} from "@remix-run/react";
 import {LoaderFunction, redirect} from "@remix-run/node";
 import {getUserSession} from "~/routes/session";
-import ChangeRoomInfo from "~/component/shoppingRoom/ChangeRoomInfo";
-import ChangeAuthority from "~/component/shoppingRoom/ChangeAuthority";
-import DeleteRoom from "~/component/shoppingRoom/DeleteRoom";
 import RoomHeader from "~/component/common/RoomHeader";
 import type {LinksFunction} from "@remix-run/node"
 import styles from "~/styles/room-detail.css?url"

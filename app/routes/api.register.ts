@@ -26,16 +26,16 @@ export async function hashPassword(password:string) {
         return await bcrypt.hash(password, salt);
 }
 // 회원 정보 DB 입력
-export async function createUser(email: string, nickname:string, password: string) {
+export async function createUser(email: string, nickname:string, password: string, question:string, answer:string) {
         const hashedPassword = await hashPassword(password);
         return prisma.user.create({
-                data: { email, nickname, password: hashedPassword },
+                data: { email, nickname, password: hashedPassword, question, answer },
         });
 }
 // 회원 가입
 async function signUp(body:UserDao){
         try {
-                await createUser(body.email,body.nickname, body.password)
+                await createUser(body.email,body.nickname, body.password, body.question, body.answer)
                 return  {state:true}
         } catch (err){
                 if(err instanceof Prisma.PrismaClientKnownRequestError){

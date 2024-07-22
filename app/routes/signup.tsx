@@ -26,8 +26,12 @@ const SignupLayout = () => {
     //닉네임 유효성 검사 에러 메시지
     const [overNickname, setOverNickname] = useState(false);
 
+    //비밀번호 확인 답변 검사 에러 메시지
+    const [noAnswer, setNoAnswer] = useState(false);
+    const [overAnswer , setOverAnswer] = useState(false);
+
     //회원가입 API
-    const signupApi = (email:string, nickname:string, password:string) => {
+    const signupApi = (email:string, nickname:string, password:string, question:string, answer:string) => {
         fetch(`${apiUrl}/api/register`,
             {
                 method: "PUT",
@@ -37,7 +41,9 @@ const SignupLayout = () => {
                 body: JSON.stringify({
                     email: email.trim(),
                     nickname : nickname,
-                    password: password.trim()
+                    password: password.trim(),
+                    question: question,
+                    answer: answer.trim()
                 }),
             })
             .then(async (res)=>{
@@ -108,13 +114,17 @@ const SignupLayout = () => {
         const email = formData.get("email");
         const nickname = formData.get("nickname");
         const password = formData.get("password");
+        const passwordQuestion = formData.get("password-question");
+        const passwordQuestionResponse = formData.get("password-question-response");
 
         //유효성 검사
-        if(email !== null && nickname !== null && password !== null){
+        if(email !== null && nickname !== null && password !== null && passwordQuestion !== null && passwordQuestionResponse !== null){
             //스크립트 태그, HTML 태그 제거
             const sanitizedEmail = await sanitizeValue(email.toString());
             let sanitizedNickname = await sanitizeValue(nickname.toString());
             const sanitizedPassword = await sanitizeValue(password.toString());
+            const sanitizedQuestion = await sanitizeValue(passwordQuestion.toString());
+            const sanitizedQuestionResponse = await sanitizeValue(passwordQuestionResponse.toString());
 
             //이메일 유효성 검사
             const checkedEmail = await checkEmail(sanitizedEmail);
@@ -178,11 +188,36 @@ const SignupLayout = () => {
                 }
             }
 
+            let checkedQuestionResponse;
+            if(sanitizedQuestionResponse.length === 0){
+                setOverAnswer(false);
+                setNoAnswer(true);
+                checkedQuestionResponse = false;
+            }else{
+                //닉네임이 10자를 넘는 지 체크
+                switch (await checkOver(sanitizedQuestionResponse, 10)){
+                    case true :
+                        setOverAnswer(false);
+                        setNoAnswer(false);
+                        checkedQuestionResponse = true;
+                        break;
+                    case false :
+                        setOverAnswer(true);
+                        setNoAnswer(false);
+                        checkedQuestionResponse = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+
             //모든 조건을 충족 시 회원가입 API
             if(checkedEmail === 'correctEmail'
                 && checkedPassword === 'correctPassword'
-                && checkedNickname === true){
-                signupApi(sanitizedEmail, sanitizedNickname, sanitizedPassword)
+                && checkedNickname === true
+                && checkedQuestionResponse === true){
+                signupApi(sanitizedEmail, sanitizedNickname, sanitizedPassword, sanitizedQuestion, sanitizedQuestionResponse)
             }
 
         }
@@ -211,6 +246,10 @@ const SignupLayout = () => {
         color: (overNickname) ? '#d64d46' : 'inherit'
     };
 
+    const passwordAnswerInputStyle = {
+        color: (noAnswer || overAnswer) ? '#d64d46' : 'inherit'
+    };
+
     //input에 포커스 시 스타일 변화 해제
     const emailErrorHandleFocus = () => {
         setNoEmail(false);
@@ -227,12 +266,16 @@ const SignupLayout = () => {
         setOverNickname(false);
     }
 
+    const passwordResponseErrorHandleFocus = () => {
+        setNoAnswer(false);
+    }
+
     return (
         <div>
             <AuthHeader/>
             <div className="wrap">
                 <div className="img-container img-shopping">
-                    <img src="/shopping.png" alt="shopping image"/>
+                    <img src="/shopping.png" alt="shopping"/>
                 </div>
                 <h1>회원가입</h1>
                 <Form onSubmit={DoSignup} className="form-container">
@@ -284,6 +327,31 @@ const SignupLayout = () => {
                             <p className="warning-message">닉네임을 10자 이하로 작성해주세요.</p>
                             :
                             <div></div>
+                        }
+                    </div>
+                    <div className="input-container">
+                        <label htmlFor="password-question">비밀번호 확인 질문</label>
+                        <select name="password-question">
+                            <option value="기억에 남는 추억의 장소는?">기억에 남는 추억의 장소는?</option>
+                            <option value="가장 기억에 남는 선생님 성함은?">가장 기억에 남는 선생님 성함은?</option>
+                            <option value="유년시절 가장 생각나는 친구 이름은?">유년시절 가장 생각나는 친구 이름은?</option>
+                            <option value="인상 깊게 읽은 책 이름은?">인상 깊게 읽은 책 이름은?</option>
+                            <option value="내가 좋아하는 캐릭터는?">내가 좋아하는 캐릭터는?</option>
+                        </select>
+                    </div>
+                    <div className="input-container">
+                        <label htmlFor="password-question-response">비밀번호 확인 답변</label>
+                        <input type="text" name="password-question-response" style={passwordAnswerInputStyle}
+                               onFocus={passwordResponseErrorHandleFocus} placeholder="10자 이하로 입력해주세요." required/>
+                        {noAnswer ?
+                          <p className="warning-message">비밀번호 확인 답변을 입력하지 않았습니다.</p>
+                          :
+                          <div></div>
+                        }
+                        {overAnswer ?
+                          <p className="warning-message">답변을 10자 이하로 작성해주세요.</p>
+                          :
+                          <div></div>
                         }
                     </div>
                     <div className="buttons-wrap">
