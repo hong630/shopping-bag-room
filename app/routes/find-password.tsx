@@ -78,7 +78,6 @@ const FindPassword = () => {
         const formData = new FormData(event.currentTarget);
         const answer = formData.get("passwordAnswer");
         if(answer!==null){
-            console.log('됨? 1')
             //스크립트 태그, HTML 태그 제거
             const sanitizedAnswer = await sanitizeValue(answer.toString());
             fetch(`${apiUrl}/api/changeUser`,
@@ -94,12 +93,10 @@ const FindPassword = () => {
                     }),
                 })
                 .then(async (res)=>{
-                    console.log('됨? 2')
                     const data = await res.json()
                     const response = data.state;
                     if (response === 'Success'){
                         //있는 이메일일 때 리셋 이메일 보냈다는 안내 메시지 열기
-                        //TODO 작업 중
                         setFindingPasswordPage(false);
                         setPasswordQuestion(null);
                         setResetSuccess(data.password);

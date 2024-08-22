@@ -456,6 +456,12 @@ a.nav-content{
     .header{
         margin: auto;
     }
+    .header.simple h1{
+        margin-left: 0;
+    }
+    .btn-nav-back{
+        padding: 0;
+    }
 }
 /*스크롤 바 */
 .room-list::-webkit-scrollbar {

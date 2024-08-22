@@ -36,10 +36,14 @@ const DetailRoom = () => {
     const apiUrl = getBaseUrl();
 
     const copyInvitationLink = (event:React.MouseEvent<HTMLButtonElement>) => {
-        const text = event.currentTarget.value;
+        const code = event.currentTarget.value;
+
+        const invitationText = `우리 같은 장바구니 공유하지 않을래요? ${apiUrl}/room/${roomId} 에 접속 후, 코드 ${code}를 입력해 들어와주세요.`
+
         if (typeof navigator !== "undefined") {
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(invitationText).then(() => {
                 //복사 성공하면 성공했다는 토스트 팝업 만들어야 함
+                alert('초대메시지가 복사되었습니다. 장바구니를 공유하고 싶은 친구에게 메시지를 보내주세요!');
             }).catch(err => {
                 console.error('복사 실패:', err);
                 //복사 실패하면 실패했다는 토스트 팝업 만들어야 함
@@ -69,6 +73,7 @@ const DetailRoom = () => {
                 console.log(data);
                 const roomMember = data.members.filter(member => member.email === userEmail);
                 setRoomDetailInfo(data);
+                console.log(data);
                 if(roomMember.length > 0){
                     //회원의 방의 멤버일 때
                     setNotMember(false);
