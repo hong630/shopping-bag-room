@@ -70,10 +70,10 @@ const DetailRoom = () => {
             })
             .then(async (res)=>{
                 const data:RoomDetailDto = await res.json();
-                console.log(data);
+                // console.log(data);
                 const roomMember = data.members.filter(member => member.email === userEmail);
                 setRoomDetailInfo(data);
-                console.log(data);
+                // console.log(data);
                 if(roomMember.length > 0){
                     //회원의 방의 멤버일 때
                     setNotMember(false);
@@ -110,7 +110,7 @@ const DetailRoom = () => {
                     }),
                 })
                 .then(async (res)=>{
-                    console.log(res)
+                    // console.log(res)
                     const data = await res.json()
                     const response = data.state;
                     if (response === 'Success'){

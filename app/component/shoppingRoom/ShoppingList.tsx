@@ -49,10 +49,10 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
             const message = JSON.parse(event.data);
             //TODO 다른 메시지 처리 로직 추가
             if (message.type === "createGroup"){
-                console.log('Received createGroup message:', message);
+                // console.log('Received createGroup message:', message);
                 ws.send(JSON.stringify({ type:"joinGroup",groupId:props.roomId, userId:props.email}))
             } else {
-                console.log('Received message:', message);
+                // console.log('Received message:', message);
                 getShoppingList()
             }
         };
@@ -78,7 +78,7 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
     const inputElement = useRef<HTMLInputElement>(null)
 
     const sendMessage = () => {
-        console.log("Send!!!")
+        // console.log("Send!!!")
         websocket?.send(JSON.stringify({ type:"message",groupId:props.roomId, message:"modify Shopping list"}))
     }
 

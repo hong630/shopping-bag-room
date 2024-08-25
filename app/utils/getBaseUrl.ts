@@ -12,9 +12,9 @@ function getWsUrl() {
     if (typeof window !== 'undefined') {
         const { protocol, hostname } = window.location;
         const wsProtocol = protocol === 'https:' ? 'wss' : 'ws';
-        const port = hostname === 'localhost' ? ':3001' : ''; // 개발 환경에서는 포트 번호 추가
+        const port = hostname === 'localhost' ? ':3001' : ':8000'; // 개발 환경에서는 포트 번호 추가
         return `${wsProtocol}://${hostname}${port}`;
-    }else{
+    } else {
         return '';
     }
 }

@@ -1,8 +1,8 @@
 import {Form, Link} from "@remix-run/react";
 import React, {useState} from "react";
-import {sanitizeValue} from "~/utils/sanitize";
 import AuthHeader from "~/component/common/AuthHeader";
 import {getBaseUrl} from "~/utils/getBaseUrl";
+import { sanitizeValue } from "~/utils/sanitize";
 
 
 const LoginComponent = () => {

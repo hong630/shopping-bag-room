@@ -1,7 +1,7 @@
 import {createCookieSessionStorage} from "@remix-run/node";
 import { v4 as uuidv4 } from 'uuid';
 
-const sessionSecret = process.env.SESSION_SECRET || uuidv4();
+const sessionSecret = process.env.REACT_APP_SESSION_SECRET || uuidv4();
 
 export const { getSession, commitSession, destroySession } = createCookieSessionStorage({
     cookie: {

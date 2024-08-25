@@ -12,9 +12,9 @@ const prisma = new PrismaClient();
 
 // 회원가입
 // 비밀번호 암호화
-const saltRoundsEnv = process.env.SALT_ROUNDS;
+const saltRoundsEnv = process.env.REACT_APP_SALT_ROUNDS;
 if (!saltRoundsEnv) {
-        throw new Error("SALT_ROUNDS 환경 변수가 정의되지 않았습니다.");
+        throw new Error("REACT_APP_SALT_ROUNDS 환경 변수가 정의되지 않았습니다.");
 }
 const saltRounds = parseInt(saltRoundsEnv, 10);
 
