@@ -22,7 +22,7 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
                 setShoppingList(data.state)
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     }
 
@@ -45,7 +45,7 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
         const ws = new WebSocket(wsUrl);
 
         ws.onmessage = (event) => {
-            console.log("event check")
+            //console.log("event check")
             const message = JSON.parse(event.data);
             //TODO 다른 메시지 처리 로직 추가
             if (message.type === "createGroup"){
@@ -60,10 +60,10 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
             ws.send(JSON.stringify({ type:"createGroup",groupId:props.roomId, userId:props.email}))
         }
         ws.onclose = () => {
-            console.log('WebSocket connection closed');
+            //console.log('WebSocket connection closed');
         };
         ws.onerror = (error) => {
-            console.log('WebSocket error:', error);
+            //console.log('WebSocket error:', error);
         };
 
         setWebsocket(ws)
@@ -114,11 +114,11 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
                         }
                     }
                 }else{
-                    console.log('response :', response)
+                    //console.log('response :', response)
                 }
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     }
 
@@ -163,11 +163,11 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
                             sendMessage()
                         }
                     }else{
-                        console.log('response :', response)
+                        //console.log('response :', response)
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
         }
     }
@@ -202,11 +202,11 @@ const ShoppingList = (props:{email:string, managerName:string, roomId:number}) =
                         setShoppingList([...shoppingList]);
                         sendMessage()
                     }else{
-                        console.log('response :', response)
+                        //console.log('response :', response)
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
         }
     }

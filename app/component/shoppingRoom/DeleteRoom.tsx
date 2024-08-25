@@ -32,10 +32,10 @@ const DeleteRoom = (props : {email : string, roomId : number, authority : boolea
             if(response === 'Success'){
                 location.href = '/room'
             }else{
-                console.log('response : ', response)
+                //console.log('response : ', response)
             }
         }).catch((err)=>{
-            console.log(err)
+            //console.log(err)
         })
     }
     return (

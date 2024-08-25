@@ -29,7 +29,7 @@ const MemberList = () => {
                 setRoomMembers(data.members);
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     },[])
     return (

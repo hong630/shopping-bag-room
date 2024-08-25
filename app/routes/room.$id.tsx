@@ -83,7 +83,7 @@ const DetailRoom = () => {
                 }
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     },[])
 
@@ -117,12 +117,12 @@ const DetailRoom = () => {
                         //방 목록 페이지로 이동
                         location.reload();
                     }else{
-                        console.log('response :', response)
+                        //console.log('response :', response)
                         alert('코드가 올바르지 않습니다. 다시 입력해주세요.')
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
         }
 
@@ -146,7 +146,7 @@ const DetailRoom = () => {
                     setAuthority(false)
                 }
             }).catch((err)=>{
-            console.log(err)
+            //console.log(err)
         })
     }
 

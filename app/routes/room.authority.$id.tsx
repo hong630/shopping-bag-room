@@ -52,7 +52,7 @@ const ChangeMaster = () => {
                     setAuthority(false)
                 }
             }).catch((err)=>{
-            console.log(err)
+            //console.log(err)
         })
     }
 
@@ -69,11 +69,11 @@ const ChangeMaster = () => {
             })
             .then(async (res)=>{
                 const data:RoomDetailDto = await res.json();
-                console.log(data);
+                //console.log(data);
                 setMemberDataExceptMaster(data.members);
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     },[])
 
@@ -81,7 +81,7 @@ const ChangeMaster = () => {
     const [successorList, setSuccessorList] = useState<RoomDetailMembersDto[] | null>(null);
 
     const setMemberDataExceptMaster = (memberData:RoomDetailMembersDto[]) => {
-        console.log('memberData', memberData)
+        //console.log('memberData', memberData)
         if(memberData !== null){
             const successorMemberData = memberData.filter(member => member.email !== userEmail);
             setSuccessorList(successorMemberData);
@@ -116,11 +116,11 @@ const ChangeMaster = () => {
                         //방 목록 페이지로 이동
                         location.reload();
                     }else{
-                        console.log('response :', response)
+                        //console.log('response :', response)
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
         }
     }

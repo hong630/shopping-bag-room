@@ -42,7 +42,7 @@ const DeleteAccount = () => {
                 if (response === 'Success'){
                     setWithdrawModal(true);
                 }else{
-                    console.log('response :', response)
+                    //console.log('response :', response)
                     alert('탈퇴를 실패하였습니다. 다시 시도해주세요.')
                     location.reload();
                 }

@@ -40,10 +40,10 @@ const ChangeRoomInfo = (props : {email : string, roomId : number, authority : bo
         if(response === 'Success'){
             location.reload();
         }else{
-            console.log('response : ', response)
+            //console.log('response : ', response)
         }
       }).catch((err)=>{
-          console.log(err)
+          //console.log(err)
       })
     }
     return (

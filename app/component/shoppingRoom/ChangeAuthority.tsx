@@ -55,18 +55,18 @@ const ChangeAuthority:React.FC<MemberListProps> = ({memberData, authority, email
                         //방 목록 페이지로 이동
                         location.reload();
                     }else{
-                        console.log('response :', response)
+                        //console.log('response :', response)
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
         }
     }
 
     useEffect(()=>{
         setMemberDataExceptMaster();
-        console.log(successorList)
+        //console.log(successorList)
     },[])
 
     return (

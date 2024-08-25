@@ -5,7 +5,7 @@ const app = express();
 const port = 3001;
 
 const server = app.listen(port, () => {
-    console.log(`Express server is running on http://localhost:${port}`);
+    //console.log(`Express server is running on http://localhost:${port}`);
 });
 
 const wss = new WebSocket.Server({ server });
@@ -62,9 +62,9 @@ wss.on('connection', (ws) => {
                     break;
 
                 case 'message':
-                    console.log("receive Message")
+                    //console.log("receive Message")
                     ws.send(JSON.stringify({ type: 'message', status: 'loading', message: 'get Message' }));
-                    console.log("receive Message2")
+                    //console.log("receive Message2")
                     if (ws.groupId) {
                         const outgoingMessage = JSON.stringify({ type: 'message', userId: ws.userId, message: data.message });
                         broadcastToGroup(ws.groupId, outgoingMessage);

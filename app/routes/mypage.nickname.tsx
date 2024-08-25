@@ -49,10 +49,10 @@ const ChangeNickname = () => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const nickname = formData.get("nickname");
-        console.log(nickname)
+        //console.log(nickname)
         if(nickname !== null){
             const sanitizedNickname = await sanitizeValue(nickname.toString());
-            console.log('여기?')
+            //console.log('여기?')
             if(sanitizedNickname.trim() === ''){
                 setNicknameError(true);
             }else{
@@ -70,7 +70,7 @@ const ChangeNickname = () => {
                         }),
                     })
                     .then(async (res)=>{
-                        console.log(res)
+                        //console.log(res)
                         const data = await res.json()
                         const response = data.state;
                         if (response === 'Success'){
@@ -78,7 +78,7 @@ const ChangeNickname = () => {
                             alert('닉네임 변경을 성공하였습니다.');
                             location.href = '/mypage';
                         }else{
-                            console.log('response :', response)
+                            //console.log('response :', response)
                             setNicknameError(true);
                         }
                     })

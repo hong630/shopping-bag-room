@@ -22,7 +22,7 @@ const ShoppingRoomListComponent = (props:{email:string, nickname:string}) => {
                 setShoppingRoomList(data);
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     },[])
 

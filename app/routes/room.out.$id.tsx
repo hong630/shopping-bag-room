@@ -42,7 +42,7 @@ const OutRoom = () => {
                     setAuthority(false)
                 }
             }).catch((err)=>{
-            console.log(err)
+            //console.log(err)
         })
     }
 
@@ -73,11 +73,11 @@ const OutRoom = () => {
                 }else if (response === 'Master member cannot go out'){
                     alert('주인은 나갈 수 없습니다. 주인 권한을 위임한 후 나가주세요.');
                 }else{
-                    console.log('response :', response)
+                    //console.log('response :', response)
                 }
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     }
     useEffect(()=>{
@@ -95,7 +95,7 @@ const OutRoom = () => {
                 setRoomDetailInfo(data);
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
     },[])
     return (

@@ -64,11 +64,11 @@ const MakeRoom = () => {
                         //방 목록 페이지로 이동
                         location.href = '/room';
                     }else{
-                        console.log('response :', response)
+                        //console.log('response :', response)
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
             }
         }

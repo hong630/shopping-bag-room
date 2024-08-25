@@ -56,7 +56,7 @@ const ChangePassword = () => {
                 }),
             })
             .then(async (res)=>{
-                console.log(res)
+                //console.log(res)
                 const data = await res.json()
                 // console.log(data)
                 const response = data.state;

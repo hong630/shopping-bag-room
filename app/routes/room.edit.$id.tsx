@@ -51,7 +51,7 @@ const EditRoom = () => {
                     setAuthority(false)
                 }
             }).catch((err)=>{
-            console.log(err)
+            //console.log(err)
         })
     }
 
@@ -68,10 +68,10 @@ const EditRoom = () => {
                 const data:RoomDetailDto = await res.json();
                 setTitleText(data.title);
                 setDetailText(data.description);
-                console.log(data);
+                //console.log(data);
             })
             .catch((err)=>{
-                console.log(err)
+                //console.log(err)
             })
 
         checkAuthority();
@@ -108,10 +108,10 @@ const EditRoom = () => {
                     if(response === 'Success'){
                         location.href = `/room/${roomId}`;
                     }else{
-                        console.log('response : ', response)
+                        //console.log('response : ', response)
                     }
                 }).catch((err)=>{
-                    console.log(err)
+                    //console.log(err)
                 })
             }
         }

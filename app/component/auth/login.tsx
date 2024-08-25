@@ -47,11 +47,11 @@ const LoginComponent = () => {
                         //로그인 실패 모달 열기
                         setFailedLogin('Invalid Password');
                     }else{
-                        console.log('response :', response)
+                        // console.log('response :', response)
                     }
                 })
                 .catch((err)=>{
-                    console.log(err)
+                    // console.log(err)
                 })
         }
     }

@@ -40,7 +40,7 @@ async function makeRoom(body:GetRoomDto){
         await createMemberRoom(body.email, room.roomId, "master");
         return  {state:"Success"}
     }catch (err){
-        console.log(err)
+        //console.log(err)
         return  {state:err}
     }
 }
@@ -277,7 +277,7 @@ async function deleteRoom(email:string, roomId:number){
         return {state : 'Normal member cannot delete a room'}
     }else{
         //마스터일 경우 삭제
-        console.log('roomId', roomId)
+        //console.log('roomId', roomId)
         await deleteRoomData(roomId);
         return {state : 'Success'}
     }

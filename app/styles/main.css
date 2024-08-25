@@ -32,4 +32,9 @@ body>div{
     font-size: 16px;
 }
 
-
+/* 반응형 */
+@media only screen and (min-width: 700px) {
+    .img-main{
+        width:30%
+    }
+}
